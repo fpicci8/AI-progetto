@@ -26,6 +26,8 @@ A[4:6,6]=[9,8]
 A[7:,6]=[4,3]
 A[4,7]=3
 A[4:6,8]=[6,4]
+
+
 #CREAZIONE DELLA FIGURA
 fig, ax = plt.subplots()
 
@@ -123,8 +125,8 @@ def lcv(i, j):
     global B
     global A
     valori = []
-    for num in B[i, j]:
-        count = 0
+    for num in B[i,j]:
+        count=0
         for k in range(9):
             if A[i, k] == 0 and num in B[i, k]:
                 count += 1
@@ -135,5 +137,26 @@ def lcv(i, j):
                 if A[m, n] == 0 and num in B[m, n]:
                     count += 1
         valori.append((num, count))
-    valori.sort(key=lambda x: x[1])
+    valori=sorted(valori, key=lambda x: x[1],reverse=True)
     return [val[0] for val in valori]
+
+#NON PENSO CHE FUNZIONI DA COMPLETARE
+def controllo_ripetizioni():
+    for i in range(9):
+        for j in range(9):
+            if A[i, j] != 0:
+                elementi_riga = set(A[i, :]) - {0}
+                elementi_colonna = set(A[:, j]) - {0}
+                elementi_quadrante = set(A[i//3*3:(i//3+1)*3, j//3*3:(j//3+1)*3].flatten()) - {0}
+                if elementi_riga:
+                    esclusi =elementi_riga
+                if elementi_colonna:
+                    esclusi = esclusi.union(elementi_colonna)
+                if elementi_quadrante:
+                    esclusi = esclusi.union(elementi_quadrante)
+                esclusi=set(esclusi)
+                if A[i, j] in esclusi:
+                    return False
+    return True
+                    
+
