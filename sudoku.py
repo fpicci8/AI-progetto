@@ -86,4 +86,4 @@ for i in range(9):
         else:
             B[i, j] = A[i, j]
 plt.show(block=False)
-#fig.canvas.draw_idle()
+fig.canvas.draw_idle()
