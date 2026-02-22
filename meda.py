@@ -61,7 +61,7 @@ for i in range(9):
                     ha="center", va="center",
                     fontsize=16)
 
-plt.show(block=False)
+
 
 #creazione matrice B con i possibili valori per ogni cella vuota di A
 B = np.empty((9,9), dtype=object)
@@ -85,5 +85,5 @@ for i in range(9):
 
         else:
             B[i, j] = A[i, j]
-fig.canvas.draw_idle()
-pause = input("Premi invio per chiudere la finestra...")
+plt.show(block=False)
+#fig.canvas.draw_idle()
