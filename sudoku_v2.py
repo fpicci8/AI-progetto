@@ -2,37 +2,25 @@ import numpy as np
 from numpy import random
 import matplotlib.pyplot as plt
 
-#creazione matrice 9x9 con 70 elementi casuali tra 1 e 10, il resto 0
+#creazione matrice 9x9 
 A=np.zeros((9, 9), dtype=int)
 num_elementi =70
-posizioni = random.choice(9*9, num_elementi, replace=False)
-righe, colonne = np.unravel_index(posizioni, (9, 9))
-valori = random.randint(1,10, size=num_elementi)
-A[righe, colonne] = valori
-
-
-
-#rimozione di eventuali duplicati nelle righe, colonne e quadranti
-for i in range(9):
-    for j in range(9):
-        if A[i, j] != 0:
-            elementi_riga = set(A[i, :]) - {0}
-            elementi_colonna = set(A[:, j]) - {0}
-            elementi_quadrante = set(A[i//3*3:(i//3+1)*3, j//3*3:(j//3+1)*3].flatten()) - {0}
-            if elementi_riga:
-                esclusi =elementi_riga
-            if elementi_colonna:
-                esclusi = esclusi.union(elementi_colonna)
-            if elementi_quadrante:
-                esclusi = esclusi.union(elementi_quadrante)
-            esclusi=set(esclusi)
-            if A[i, j] in esclusi:
-                possibili = list(set(range(1,10)) - esclusi)
-                if possibili:
-                    A[i, j] = random.choice(possibili)
-                else:
-                    A[i, j] = 0
-
+A[:,0]=[1,3,5,8,6,2,4,9,7]
+A[1:7,1]=[9,7,5,1,3,6]
+A[8,1]=8
+A[0:3,2]=[8,6,2,7]
+A[5:8,2]=[4,1,5,3]
+A[:,3]=[2,4,3,6,8,9,5,7,1]
+A[0,4]=7
+A[2:5,4]=[9,2,3,5]
+A[7,4]=6
+A[0:2,5]=[5,8,6]
+A[4:8,5]=[7,1,2,3,9]
+A[1:8,6]=[7,1,3,5,8,9,4,2]
+A[0:6,7]=[9,5,4,1,2,7,3]
+A[8,7]=6
+A[0:4,8]=[3,2,8,9,4]
+A[6:8,8]=[7,1,5]
 #CREAZIONE DELLA FIGURA
 fig, ax = plt.subplots()
 
