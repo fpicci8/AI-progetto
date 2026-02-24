@@ -54,6 +54,15 @@ for i in range(9):
                     ha="center", va="center",
                     fontsize=16)
 
+#funzione che restituisce gli elementi presenti nella riga, colonna e quadrante di una cella (i, j)
+def elementi(i, j):
+    global B
+    global A
+    elementi_riga = set(A[i, :]) - {0}
+    elementi_colonna = set(A[:, j]) - {0}
+    elementi_quadrante = set(A[i//3*3:(i//3+1)*3, j//3*3:(j//3+1)*3].flatten()) - {0} 
+    return elementi_riga, elementi_colonna, elementi_quadrante
+
 
 
 #creazione matrice B con i possibili valori per ogni cella vuota di A
@@ -81,14 +90,6 @@ dim_min=10
 #fig.canvas.draw_idle()
 
 
-#funzione che restituisce gli elementi presenti nella riga, colonna e quadrante di una cella (i, j)
-def elementi(i, j):
-    global B
-    global A
-    elementi_riga = set(A[i, :]) - {0}
-    elementi_colonna = set(A[:, j]) - {0}
-    elementi_quadrante = set(A[i//3*3:(i//3+1)*3, j//3*3:(j//3+1)*3].flatten()) - {0} 
-    return elementi_riga, elementi_colonna, elementi_quadrante
 
 #minimum remaing value (MRV) heuristic
 def mrv():
