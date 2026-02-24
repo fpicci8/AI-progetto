@@ -275,7 +275,7 @@ if __name__ == "__main__":
         
         # 2. Controlla che il file sia stato letto e convertito correttamente
         if A_iniziale is not None:    
-            disegna_sudoku(A_iniziale, 1)    
+            disegna_sudoku(A_iniziale, 0)    
 
             # 3. Verifica la validità logica prima di lanciare la ricerca
             if verifica_configurazione(A_iniziale) == True:
