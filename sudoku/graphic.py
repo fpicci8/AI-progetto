@@ -13,7 +13,7 @@ from logic import elementi
 #===========================
 
 # A è la matrice in ingresso, x è un flag per plottare o meno i domini possibili (1 si, 0 no)
-def disegna_sudoku(A,x):  
+def disegna_sudoku(A,x, errore=None):  
     """Visualizza la matrice A con matplotlib"""
     fig, ax = plt.subplots()
     ax.set_xlim(-0.5, 8.5)
@@ -21,10 +21,18 @@ def disegna_sudoku(A,x):
     ax.set_aspect("equal")
     ax.set_xticks([])
     ax.set_yticks([])
-    if x==1:
-        ax.set_title("Stato Iniziale con Domini Possibili", pad=20)
+    
+    
+    if errore:
+        ax.set_title("ERRORE DI CONFIGURAZIONE!", pad=20, color="red", weight="bold")
+        i_err, j_err = errore
+        # Disegna il quadrato giallo: j è l'asse X, i è l'asse Y
+        ax.add_patch(plt.Rectangle((j_err - 0.5, i_err - 0.5), 1, 1, facecolor='yellow', alpha=0.5))
     else:
-        ax.set_title("Stato Iniziale", pad=20)    
+        if x==1:
+          ax.set_title("Stato Iniziale con Domini Possibili", pad=20)
+        else:
+          ax.set_title("Stato Iniziale", pad=20)    
 
     for k in range(10):
         lw = 2.5 if k % 3 == 0 else 0.8
@@ -37,7 +45,7 @@ def disegna_sudoku(A,x):
                 ax.text(j, i, str(A[i, j]), ha="center", va="center", fontsize=16)
     
     # creazione matrice B con i possibili valori e disegno numerini grigi
-    if x==1:
+    if x==1 and not errore:
         B = np.empty((9,9), dtype=object)
         for i in range(9):
             for j in range(9):

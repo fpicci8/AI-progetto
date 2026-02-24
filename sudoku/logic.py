@@ -117,8 +117,8 @@ def verifica_configurazione(A):
                 riga, colonna, quadrante = elementi(A, i, j)
                 if val in riga or val in colonna or val in quadrante:
                     A[i, j] = val # Ripristiniamo
-                    print(f"Errore di configurazione: Il valore {val} in posizione ({i}, {j}) viola le regole, è un duplicato.")
-                    return False
+                    print(f"Errore di configurazione: Il valore {val} in posizione ({i+1}, {j+1}) viola le regole, è un duplicato.")
+                    return False, (i,j)
                 A[i, j] = val # Ripristiniamo
                 
     # 2. Controllo celle senza opzioni 
@@ -126,10 +126,10 @@ def verifica_configurazione(A):
         for j in range(9):
             if A[i, j] == 0: # Solo per le celle vuote
                 if len(dominio(A, i, j)) == 0: 
-                    print(f"Errore di configurazione: La cella vuota in ({i}, {j}) non ha alcun valore possibile.")
-                    return False
+                    print(f"Errore di configurazione: La cella vuota in ({i+1}, {j+1}) non ha alcun valore possibile.")
+                    return False, (i,j)
                     
-    return True
+    return True, None
 
 
 def carica_sudoku_da_file(nome_file):

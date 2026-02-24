@@ -18,13 +18,16 @@ if __name__ == "__main__":
         if A_iniziale is not None:
             
             A_originale = np.copy(A_iniziale) # Salviamo una copia dell'originale per la visualizzazione finale
-            scelta = input("Vuoi visualizzare i domini possibili per le celle vuote? (s/n): ").strip().lower()
-            # Imposta il flag a 1 se l'utente risponde con 's', 'si', 'y', altrimenti 0
-            flag = 1 if scelta in ['s', 'si', 'y', 'yes'] else 0    
-            disegna_sudoku(A_iniziale, flag)    
+            
 
             # 3. Verifica la validità logica prima di lanciare la ricerca
-            if verifica_configurazione(A_iniziale) == True:
+            valido, info_errore = verifica_configurazione(A_iniziale)
+            
+            if valido:
+                scelta = input("Vuoi visualizzare i domini possibili per le celle vuote? (s/n): ").strip().lower()
+                # Imposta il flag a 1 se l'utente risponde con 's', 'si', 'y', altrimenti 0
+                flag = 1 if scelta in ['s', 'si', 'y', 'yes'] else 0    
+                disegna_sudoku(A_iniziale, flag)    
                 print("Ricerca in corso...")
                 statistiche_ricerca = {'nodi_espansi': 0, 'numero_backtrack': 0, 'percorso': []}
                     
@@ -48,5 +51,6 @@ if __name__ == "__main__":
                     print("\nNessuna soluzione trovata per la configurazione data.")
             else:
                 print("\nErrore: La configurazione di partenza viola i vincoli del Sudoku.")
+                disegna_sudoku(A_iniziale, 0, errore=info_errore)
     else:
         print("Nessun file selezionato. Operazione annullata.")
