@@ -89,7 +89,7 @@ def backtrack(A, profondita=0, stats=None):
     
     for val in valori_da_provare:
         stats['nodi_espansi'] += 1
-        print(f"Profondità: {profondita:02d} | Espansione nodo ({i}, {j}) -> provo {val}")
+        print(f"Profondità: {profondita:02d} | Espansione nodo ({i+1}, {j+1}) -> provo {val}")
         
         A[i, j] = val  # Ipotesi
         
@@ -99,7 +99,7 @@ def backtrack(A, profondita=0, stats=None):
         # --- INIZIO BACKTRACK ---
         # Se arriviamo qui, significa che il ramo esplorato ha portato a un fallimento.
         stats['numero_backtrack'] += 1
-        print(f"Profondità: {profondita:02d} | BACKTRACK su nodo ({i}, {j}) -> annullo {val}")
+        print(f"Profondità: {profondita:02d} | BACKTRACK su nodo ({i+1}, {j+1}) -> annullo {val}")
         A[i, j] = 0  # Backtrack: annulla l'ipotesi se fallisce
         
     return False
@@ -275,7 +275,7 @@ if __name__ == "__main__":
         
         # 2. Controlla che il file sia stato letto e convertito correttamente
         if A_iniziale is not None:    
-            disegna_sudoku(A_iniziale, 0)    
+            disegna_sudoku(A_iniziale, 1)    
 
             # 3. Verifica la validità logica prima di lanciare la ricerca
             if verifica_configurazione(A_iniziale) == True:
