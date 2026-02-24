@@ -1,5 +1,6 @@
 
 import matplotlib.pyplot as plt
+import numpy as np
 from logic import elementi
 
 
@@ -20,7 +21,10 @@ def disegna_sudoku(A,x):
     ax.set_aspect("equal")
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title("Stato Iniziale con Domini Possibili", pad=20)
+    if x==1:
+        ax.set_title("Stato Iniziale con Domini Possibili", pad=20)
+    else:
+        ax.set_title("Stato Iniziale", pad=20)    
 
     for k in range(10):
         lw = 2.5 if k % 3 == 0 else 0.8
@@ -54,8 +58,8 @@ def disegna_sudoku(A,x):
     plt.show()
     
     
-def disegna_sudoku_finale(A):
-    """Visualizza il Sudoku risolto"""
+def disegna_sudoku_finale(A, A_originale, flag_ordine=0, percorso=None):
+    """Visualizza il Sudoku risolto, distinguendo i numeri iniziali da quelli calcolati."""
     fig, ax = plt.subplots()
     ax.set_xlim(-0.5, 8.5)
     ax.set_ylim(8.5, -0.5)
@@ -72,6 +76,23 @@ def disegna_sudoku_finale(A):
     for i in range(9):
         for j in range(9):
             if A[i, j] != 0:
-                ax.text(j, i, str(A[i, j]), ha="center", va="center", fontsize=16, color="blue") # Numeri risolti in blu
-    plt.show()    
-    
+                # Controlliamo la matrice originale per decidere il colore
+                if A_originale[i, j] != 0:
+                    colore = "black"
+                    peso = "bold"  # Grassetto per i numeri di partenza
+                else:
+                    colore = "blue"
+                    peso = "normal" # Normale per i numeri trovati
+                    
+                ax.text(j, i, str(A[i, j]), ha="center", va="center", 
+                        fontsize=16, color=colore, weight=peso)
+                
+    # Disegna l'ordine di completamento se richiesto         
+    if flag_ordine == 1 and percorso:
+        for step, (i, j) in enumerate(percorso, start=1):
+            # j-0.35 e i-0.35 posizionano il testo in alto a sinistra nella cella
+            ax.text(j - 0.35, i - 0.35, str(step), ha="center", va="center", 
+                    fontsize=8, color="red", weight="bold")
+            
+                        
+    plt.show()

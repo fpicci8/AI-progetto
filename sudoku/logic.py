@@ -69,7 +69,7 @@ def lcv(A, i, j):
 def backtrack(A, profondita=0, stats=None):
     #inizializzo il dizionario 
     if stats is None:
-        stats = {'nodi_espansi': 0, 'numero_backtrack': 0}
+        stats = {'nodi_espansi': 0, 'numero_backtrack': 0, 'percorso': []}
         
     """Funzione ricorsiva di depth-first search"""
     cella = mrv_degree(A)
@@ -87,6 +87,7 @@ def backtrack(A, profondita=0, stats=None):
         print(f"Profondità: {profondita:02d} | Espansione nodo ({i+1}, {j+1}) -> provo {val}")
         
         A[i, j] = val  # Ipotesi
+        stats['percorso'].append((i, j)) # TRACCIA: Salva la coordinata
         
         if backtrack(A, profondita + 1, stats): # Esplorazione in profondità (passando A)
             return True
@@ -96,7 +97,7 @@ def backtrack(A, profondita=0, stats=None):
         stats['numero_backtrack'] += 1
         print(f"Profondità: {profondita:02d} | BACKTRACK su nodo ({i+1}, {j+1}) -> annullo {val}")
         A[i, j] = 0  # Backtrack: annulla l'ipotesi se fallisce
-        
+        stats['percorso'].pop() # TRACCIA: Rimuove l'ultima coordinata dal percorso
     return False
 
 
