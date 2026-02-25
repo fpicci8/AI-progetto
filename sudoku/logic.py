@@ -66,7 +66,7 @@ def lcv(A, i, j):
     return [val[0] for val in valori]
 
 
-def backtrack(A, profondita=0, stats=None):
+def backtrack(A, profondita=0, stats=None, stampa_log=True):
     #inizializzo il dizionario 
     if stats is None:
         stats = {'nodi_espansi': 0, 'numero_backtrack': 0, 'percorso': []}
@@ -84,18 +84,20 @@ def backtrack(A, profondita=0, stats=None):
     
     for val in valori_da_provare:
         stats['nodi_espansi'] += 1
-        print(f"Profondità: {profondita:02d} | Espansione nodo ({i+1}, {j+1}) -> provo {val}")
+        if stampa_log:
+            print(f"Profondità: {profondita:02d} | Espansione nodo ({i+1}, {j+1}) -> provo {val}")
         
         A[i, j] = val  # Ipotesi
         stats['percorso'].append((i, j)) # TRACCIA: Salva la coordinata
         
-        if backtrack(A, profondita + 1, stats): # Esplorazione in profondità (passando A)
+        if backtrack(A, profondita + 1, stats, stampa_log): # Esplorazione in profondità (passando A)
             return True
         
         # --- INIZIO BACKTRACK ---
         # Se arriviamo qui, significa che il ramo esplorato ha portato a un fallimento.
         stats['numero_backtrack'] += 1
-        print(f"Profondità: {profondita:02d} | BACKTRACK su nodo ({i+1}, {j+1}) -> annullo {val}")
+        if stampa_log:
+            print(f"Profondità: {profondita:02d} | BACKTRACK su nodo ({i+1}, {j+1}) -> annullo {val}")
         A[i, j] = 0  # Backtrack: annulla l'ipotesi se fallisce
         stats['percorso'].pop() # TRACCIA: Rimuove l'ultima coordinata dal percorso
     return False
