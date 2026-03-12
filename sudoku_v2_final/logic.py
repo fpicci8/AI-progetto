@@ -17,7 +17,7 @@ def dominio(A, i, j):
 def mrv_degree(A):
     """Sceglie la prossima cella usando MRV e Degree come spareggio"""
     dim_min = 10 # Inizialmente più grande del massimo numero di opzioni (9)
-    max_grado = -1 # Inizialmente più piccolo di qualsiasi grado possibile
+    max_grado = -1 # Inizialmente più piccolo di qualsiasi grado possibile  .
     cella_scelta = None # Inizialmente nessuna cella scelta
     
     for i in range(9): # Scorre tutte le celle
