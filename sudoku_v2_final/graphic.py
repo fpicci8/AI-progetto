@@ -35,23 +35,23 @@ def disegna_sudoku(A,x, errore=None):
           ax.set_title("Stato Iniziale", pad=20)    
 
     for k in range(10):
-        lw = 2.5 if k % 3 == 0 else 0.8
-        ax.plot([-0.5, 8.5], [k-0.5, k-0.5], color="black", linewidth=lw)
-        ax.plot([k-0.5, k-0.5], [-0.5, 8.5], color="black", linewidth=lw)
+        lw = 2.5 if k % 3 == 0 else 0.8 # linee piu grosse ogni 3 righe/colonne per evidenziare i quadranti
+        ax.plot([-0.5, 8.5], [k-0.5, k-0.5], color="black", linewidth=lw) # Disegna le linee orizzontali
+        ax.plot([k-0.5, k-0.5], [-0.5, 8.5], color="black", linewidth=lw) # Disegna le linee verticali
 
     for i in range(9):
         for j in range(9):
-            if A[i, j] != 0:
-                ax.text(j, i, str(A[i, j]), ha="center", va="center", fontsize=16)
+            if A[i, j] != 0: 
+                ax.text(j, i, str(A[i, j]), ha="center", va="center", fontsize=16) 
     
     # creazione matrice B con i possibili valori e disegno numerini grigi
     if x==1 and not errore:
-        B = np.empty((9,9), dtype=object)
+        B = np.empty((9,9), dtype=object) 
         for i in range(9):
             for j in range(9):
                 if A[i, j] == 0:
                     elementi_riga, elementi_colonna, elementi_quadrante = elementi(A, i, j)
-                    B[i, j] = set(range(1, 10)) - elementi_riga - elementi_colonna - elementi_quadrante
+                    B[i, j] = set(range(1, 10)) - elementi_riga - elementi_colonna - elementi_quadrante #
                 
                     pos = {
                         1: (-0.30, -0.30), 2: (0.00, -0.30), 3: (0.30, -0.30),
@@ -62,7 +62,7 @@ def disegna_sudoku(A,x, errore=None):
                         ax.text(j + pos[num][0], i + pos[num][1], str(num),
                                 ha="center", va="center", fontsize=9, color="gray")
                 else:
-                    B[i, j] = A[i, j]            
+                    B[i, j] = A[i, j]         
     plt.show()
     
     
@@ -97,7 +97,7 @@ def disegna_sudoku_finale(A, A_originale, flag_ordine=0, percorso=None, stats=No
                 
     # Disegna l'ordine di completamento se richiesto         
     if flag_ordine == 1 and percorso:
-        for step, (i, j) in enumerate(percorso, start=1):
+        for step, (i, j) in enumerate(percorso, start=1): #enumerate serve per numerare i passi a partire da 1
             # j-0.35 e i-0.35 posizionano il testo in alto a sinistra nella cella
             ax.text(j - 0.30, i - 0.30, str(step), ha="center", va="center", 
                     fontsize=7, color="red", weight="bold")

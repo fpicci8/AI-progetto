@@ -12,7 +12,9 @@ def carica_sudoku_da_file(nome_file):
     try:
         with open(nome_file, 'r') as f:
             # Legge tutte le righe, rimuove gli spazi extra e salta automaticamente le righe vuote
-            linee = [linea.strip() for linea in f if linea.strip()]
+            linee = [linea.strip() for linea in f if linea.strip()] # prima itera linea in f, prima di salvare (con if linea.strip()) rimuove le righe vuote e 
+            #quelle con solo spazi, poi salva solo quelle non vuote in linee. Infine rimuove eventuali spazi all'inizio o alla fine di ogni riga con strip().
+            
             
         if not linee:
             print("Errore: Il file è vuoto.")
@@ -24,13 +26,13 @@ def carica_sudoku_da_file(nome_file):
         # FORMATO 1: BATCH (Stringhe singole da 81 caratteri)
         # ==================================================
         # Se la prima riga ha esattamente 81 caratteri, gestiamo come file a riga singola/multipla
-        if len(linee[0].replace('.', '0')) == 81:
+        if len(linee[0].replace('.', '0')) == 81:  # controlla la lunghezza della prima linea (sostituisce i punti con gli zeri)
             for linea in linee:
-                # Sostituisce eventuali punti con zeri per compatibilità con il formato Norvig
-                contenuto = linea.replace('.', '0')
+                
+                contenuto = linea.replace('.', '0') # Sostituisce i punti con zeri perchhè il nostro motore usa 0 per le celle vuote
                 # Converte ogni carattere in intero e "piega" l'array in una matrice 9x9
-                A = np.array([int(x) for x in contenuto]).reshape(9, 9)
-                sudokus.append(A)
+                A = np.array([int(x) for x in contenuto]).reshape(9, 9) # fa il cast da stringa a intero per ogni carattere, poi con reshape lo trasforma in una matrice 9x9
+                sudokus.append(A) 
             return sudokus
 
         # ==================================================
@@ -41,14 +43,14 @@ def carica_sudoku_da_file(nome_file):
             valori = []
             for linea in linee:
                 # Divide i numeri usando gli spazi e li converte in interi
-                numeri_riga = [int(x) for x in linea.split()]
-                valori.append(numeri_riga)
+                numeri_riga = [int(x) for x in linea.split()] # con split() divide la riga in base agli spazi, poi converte ogni elemento in intero
+                valori.append(numeri_riga) # lista di liste, esempio [[5, ..., 0, 0], [6, ..., 0, 0], ...]
                 
-            A = np.array(valori, dtype=int)
+            A = np.array(valori, dtype=int) # alla fine avremo 9 liste di 9 numeri ciascuna, che vengono convertite in una matrice NumPy 9x9
             
             # Verifica strutturale rapida
             if A.shape == (9, 9):
-                sudokus.append(A)
+                sudokus.append(A) #superata la verifica, tramite append aggiunge la matrice alla lista dei sudokus
             else:
                 print(f"Errore: Dimensioni errate per la griglia. Trovata {A.shape}")
             return sudokus

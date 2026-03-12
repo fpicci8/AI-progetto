@@ -2,9 +2,11 @@ import numpy as np
 
 def elementi(A, i, j):
     """Trova gli elementi già inseriti in riga, colonna e quadrante"""
-    elementi_riga = set(A[i, :]) - {0} # Rimuove lo 0 che rappresenta le celle vuote e restituisce solo i numeri già presenti
-    elementi_colonna = set(A[:, j]) - {0}
-    elementi_quadrante = set(A[i//3*3:(i//3+1)*3, j//3*3:(j//3+1)*3].flatten()) - {0} 
+    elementi_riga = set(A[i, :]) - {0} # Rimuove lo 0 che rappresenta le celle vuote e restituisce solo i numeri già presenti nella riga i
+    elementi_colonna = set(A[:, j]) - {0} # Rimuove lo 0 che rappresenta le celle vuote e restituisce solo i numeri già presenti nella colonna j
+    elementi_quadrante = set(A[i//3*3:(i//3+1)*3, j//3*3:(j//3+1)*3].flatten()) - {0}  # Rimuove lo 0 che rappresenta le celle vuote e restituisce solo i numeri già presenti nel quadrante 3x3 a cui appartiene la cella (i, j)
+    #data una cella (i,j), es 3,1 set (A[3//3*3:(3//3+1)*3, 1//3*3:(1//3+1)*3]) = set (A[3:6, 0:3]) e questo è  il quadrante 3x3 che contiene la cella (3,1).
+    #il secondo indice non è compreso.
     return elementi_riga, elementi_colonna, elementi_quadrante
 
 def dominio(A, i, j):
@@ -74,7 +76,7 @@ def backtrack(A, profondita=0, stats=None, stampa_log=True):
         stats = {'nodi_espansi': 0, 'numero_backtrack': 0, 'percorso': []}
         
     """Funzione ricorsiva di depth-first search"""
-    cella = mrv_degree(A)
+    cella = mrv_degree(A) # sceglie la prossima cella da espandere usando MRV e Degree come spareggio
     
     # Condizione di terminazione: griglia piena
     if cella is None:# Se mrv_degree restituisce None, significa che non ci sono più celle vuote, quindi il Sudoku è risolto
@@ -87,13 +89,14 @@ def backtrack(A, profondita=0, stats=None, stampa_log=True):
     for val in valori_da_provare: 
         stats['nodi_espansi'] += 1 # Incrementa il contatore dei nodi espansi ogni volta che si prova un valore
         if stampa_log: 
-            print(f"Profondità: {profondita:02d} | Espansione nodo ({i+1}, {j+1}) -> provo {val}")
+            print(f"Profondità: {profondita:02d} | Espansione nodo ({i+1}, {j+1}) -> provo {val}") #02d formatta il numero con almeno 2 cifre, aggiungendo uno zero davanti se necessario
         
         A[i, j] = val  # Ipotesi
         stats['percorso'].append((i, j)) # TRACCIA: Salva la coordinata
         
         if backtrack(A, profondita + 1, stats, stampa_log): # Esplorazione in profondità (passando A)
-            return True
+            return True 
+            #se la ricorsione restituisce True, significa che la soluzione è stata trovata lungo questo ramo, quindi si propaga il True verso l'alto senza fare backtrack
         
         # --- INIZIO BACKTRACK ---
         # Se arriviamo qui, significa che il ramo esplorato ha portato a un fallimento.
@@ -102,8 +105,8 @@ def backtrack(A, profondita=0, stats=None, stampa_log=True):
             print(f"Profondità: {profondita:02d} | BACKTRACK su nodo ({i+1}, {j+1}) -> annullo {val}")
         A[i, j] = 0  # Backtrack: annulla l'ipotesi se fallisce
         stats['percorso'].pop() # TRACCIA: Rimuove l'ultima coordinata dal percorso
-    return False
-
+    return False 
+    # se nessun valore ha funzionato, restituisce False per indicare che questa configurazione non porta a una soluzione valida
 
 
 
@@ -134,38 +137,4 @@ def verifica_configurazione(A):
                     return False, (i,j)
                     
     return True, None
-
-
-def carica_sudoku_da_file(nome_file):
-    """
-    Legge un Sudoku da un file di testo.
-    I numeri devono essere separati SOLO da spazi. Le celle vuote sono '0'.
-    """
-    try:
-        valori = []
-        with open(nome_file, 'r') as f:
-            for linea in f:
-                linea = linea.strip()
-                if not linea:
-                    continue # Salta le righe vuote
-                
-                # Divide i numeri usando gli spazi e li converte in interi
-                numeri_riga = [int(x) for x in linea.split()]
-                valori.append(numeri_riga)
-                
-        A = np.array(valori, dtype=int)
-        
-        # Verifica strutturale
-        if A.shape != (9, 9):
-            print(f"Errore: Il file non contiene una griglia 9x9. Dimensioni lette: {A.shape}")
-            return None
-            
-        return A
-
-    except FileNotFoundError:
-        print(f"Errore: Il file '{nome_file}' non è stato trovato.")
-        return None
-    except ValueError:
-        print("Errore: Il file contiene caratteri non validi. Usa solo numeri e spazi.")
-        return None
 

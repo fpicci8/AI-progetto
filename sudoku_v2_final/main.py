@@ -33,16 +33,16 @@ if __name__ == "__main__":
                     disegna_sudoku(A_iniziale, flag)    
                     print("Ricerca in corso...")
                     tk.messagebox.showinfo("Ricerca", "Premi ok per avviare la risoluzione del Sudoku.")
-                    statistiche_ricerca = {'nodi_espansi': 0, 'numero_backtrack': 0, 'percorso': []}
+                    statistiche_ricerca = {'nodi_espansi': 0, 'numero_backtrack': 0, 'percorso': []} 
                         
                     # 4. Lancia l'algoritmo
                     if backtrack(A_iniziale, profondita=0, stats=statistiche_ricerca):# Se la ricerca ha successo, A_iniziale è ora risolto
-                        print("\n" + "="*50)
+                        print("\n" + "="*50) 
                         print("SUDOKU RISOLTO CON SUCCESSO!")
                         print("="*50)
                         print(f"Nodi totali espansi:   {statistiche_ricerca['nodi_espansi']}")
                         print(f"Numero di backtrack:   {statistiche_ricerca['numero_backtrack']}")
-                        print(f"Profondità soluzione:  {statistiche_ricerca.get('profondita_soluzione', 0)}")
+                        print(f"Profondità soluzione:  {statistiche_ricerca.get('profondita_soluzione', 0)}") # usiamo get perchè se la chiave non esiste, rende 0 anziche keyerror
                         print("="*50 + "\n")
                         
                         
